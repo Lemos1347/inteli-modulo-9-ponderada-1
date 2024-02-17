@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"publisher/sensors"
 	"time"
 
@@ -14,7 +15,7 @@ func randSleep() {
 	time.Sleep(time.Duration(sleepTime) * time.Second)
 }
 
-func pubMessage(topic string) {
+func pubMessage(topic string, csvPath string) {
 	opts := MQTT.NewClientOptions().AddBroker("tcp://localhost:1891")
 	opts.SetClientID("go_publisher")
 
@@ -24,7 +25,7 @@ func pubMessage(topic string) {
 	}
 
 	for {
-		solarReading, err := sensors.GenerateReading("sensors/dados_sensor_radiacao_solar.csv")
+		solarReading, err := sensors.GenerateReading(csvPath)
 		if err == nil {
 			randSleep()
 			fmt.Printf("\033[33mDado lido: %s  \033[0m\n", solarReading)
@@ -39,5 +40,9 @@ func pubMessage(topic string) {
 }
 
 func main() {
-	pubMessage("sensors/solar_sensor")
+	if len(os.Args) < 2 {
+		fmt.Println("\033[31mMissing csv path\033[0m")
+		os.Exit(1)
+	}
+	pubMessage("sensors/solar_sensor", os.Args[1])
 }

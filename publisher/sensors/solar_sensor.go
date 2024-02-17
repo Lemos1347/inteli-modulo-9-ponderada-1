@@ -3,16 +3,10 @@ package sensors
 import (
 	"encoding/csv"
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
 )
-
-// Dict para manter o controle de quantos dados foram lidos para cada período
-var timeRegister = map[string]int{
-	"Manhã": 0,
-	"Tarde": 0,
-	"Noite": 0,
-}
 
 // Função para determinar o período do dia atual
 func getTimePeriod() string {
@@ -45,15 +39,7 @@ func GenerateReading(pathCSV string) (string, error) {
 	for i, record := range csvData[1:] { // Pula o cabeçalho
 		period := record[0]
 		if period == dayPeriod {
-			indiceAtual := timeRegister[dayPeriod]
-			if indiceAtual < 10 {
-				timeRegister[dayPeriod] += 1
-				if indiceAtual == 0 {
-					return record[1], nil
-				} else {
-					return csvData[i+indiceAtual][1], nil
-				}
-			}
+			return csvData[i+rand.Intn(10)][1], nil
 		}
 	}
 
