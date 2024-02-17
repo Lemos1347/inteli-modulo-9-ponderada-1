@@ -7,10 +7,10 @@ import (
 
 func main() {
 	pub.PubWg.Add(1)
-	go pub.PubMessage("test/topic")
+	go pub.PubMessage("sensors/solar_sensor")
 
 	sub.SubWg.Add(1)
-	go sub.RunSub("test/topic")
+	go sub.RunSub("sensors/solar_sensor")
 
 	sub.SubWg.Wait()
 	pub.PubWg.Wait()
