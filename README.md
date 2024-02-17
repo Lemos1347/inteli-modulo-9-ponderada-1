@@ -25,9 +25,9 @@ cd inteli-modulo-9-ponderada-1
 >[!NOTE]
 > Caso queira editar o projeto, lembre de instalar as depencias de cada módulo:
 
-```bash
-cd publisher ; go mod tidy ; cd ../subscriber ; go mod tidy ; cd ..
-```
+> ```bash
+> cd publisher ; go mod tidy ; cd ../subscriber ; go mod tidy ; cd ..
+> ```
 
 ### Execução
 
