@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// Função para determinar o período do dia atual
+// function to determine the period of the day
 func getTimePeriod() string {
 	horaAtual := time.Now().Hour()
 	switch {
@@ -21,7 +21,7 @@ func getTimePeriod() string {
 	}
 }
 
-// Função para ler o dado apropriado do CSV baseado no período do dia
+// function to generate reading of a given sensor
 func GenerateReading(pathCSV string) (string, error) {
 	file, err := os.Open(pathCSV)
 	if err != nil {
@@ -36,7 +36,7 @@ func GenerateReading(pathCSV string) (string, error) {
 	}
 
 	dayPeriod := getTimePeriod()
-	for i, record := range csvData[1:] { // Pula o cabeçalho
+	for i, record := range csvData[1:] { 
 		period := record[0]
 		if period == dayPeriod {
 			return csvData[i+rand.Intn(10)][1], nil

@@ -10,12 +10,15 @@ import (
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
+// function to generate a random sleep time
 func randSleep() {
 	sleepTime := rand.Intn(5) + 1
 	time.Sleep(time.Duration(sleepTime) * time.Second)
 }
 
+// function to publish a messagem in a given topic
 func pubMessage(topic string, csvPath string) {
+  // connecting to a broker
 	opts := MQTT.NewClientOptions().AddBroker("tcp://localhost:1891")
 	opts.SetClientID("go_publisher")
 
@@ -24,7 +27,9 @@ func pubMessage(topic string, csvPath string) {
 		panic(token.Error())
 	}
 
+  // loop to emit the messages
 	for {
+    // Getting the readings of a given sensor
 		solarReading, err := sensors.GenerateReading(csvPath)
 		if err == nil {
 			randSleep()

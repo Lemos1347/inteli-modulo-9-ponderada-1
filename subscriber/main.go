@@ -11,10 +11,10 @@ var messagePubHandler MQTT.MessageHandler = func(_ MQTT.Client, msg MQTT.Message
 	fmt.Printf("Recebido dado solar: %s do tópico: %s as %s \n", msg.Payload(), msg.Topic(), time.Now().Format(time.RFC3339))
 }
 
-func runSub(topic string) {
+func runSub(topic string, callback MQTT.MessageHandler) {
 	opts := MQTT.NewClientOptions().AddBroker("tcp://localhost:1891")
 	opts.SetClientID("go_subscriber")
-	opts.SetDefaultPublishHandler(messagePubHandler)
+	opts.SetDefaultPublishHandler(callback)
 
 	client := MQTT.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -27,9 +27,9 @@ func runSub(topic string) {
 	}
 
 	fmt.Println("Subscriber está rodando. Pressione CTRL+C para sair.")
-	select {} // Bloqueia indefinidamente
+	select {}
 }
 
 func main() {
-  runSub("sensors/solar_sensor")
+	runSub("sensors/solar_sensor", messagePubHandler)
 }
